@@ -62,7 +62,7 @@ get_header(); ?>
                                <?php
                                 echo '<h5><a href="' . $permalink . '">' . get_the_title() . '</a></h5>';
                                 echo get_template_part( 'parts/content', 'byline' );
-                                echo $permalink;
+                                //echo $permalink;
                             //...
                             // echo $counter;
                              $counter++;
