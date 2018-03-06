@@ -12,6 +12,8 @@ get_header(); ?>
 <div class="content">
     <div class="grid-container">
         <div class="inner-content grid-x grid-margin-x grid-padding-x">
+
+           <!--  LOGO AND INSTRUCTIONS GRID -->
             <div class="small-12 medium-8 large-8 cell">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/diageo-logo.png" style='width: 180px; margin-top:25px;'/>
                 <h3>Sell Sheets</h3>
@@ -21,6 +23,7 @@ get_header(); ?>
             <div class="cell auto"></div>
 
 
+            <!--  CATEGORIES -->
             <div class="main small-12 medium-6 large-6 cell" role="main">
 
                 <div id="cbResults"></div>
@@ -50,7 +53,7 @@ get_header(); ?>
                             ];
 
                             $query = new WP_Query($args);
-                             echo '<h4>' . $category->slug . '</h4>';
+                             echo '<h4>' . $category->name . '</h4>';
 
 
                             while ($query->have_posts()) : $query->the_post();
@@ -83,13 +86,13 @@ get_header(); ?>
                       <input type="button" style="width: 100%;" class="button" onclick="submitForm('redirect')" value="View Now" />
 
 
-    <p class="or">OR</p>
+                      <p class="or">OR</p>
                 
                       <div class="input-group">
                         <span class="input-group-label">Name your collection</span>
                       <input class="input-group-field" type="text" name="selectionName">
                       <div class="input-group-button">
-                         <input type="button" class="button" onclick="addCheckboxContent(document.checkBoxForm); pgRefresh();" value="Save" />
+                         <input type="button" class="button" onclick="setCookies(document.checkBoxForm);  pgRefresh();" value="Save" />
                       </div>
                     </div>
 
@@ -107,18 +110,29 @@ get_header(); ?>
                   
                   <script type="text/javascript">
                     var cookieCount = 0;
-                     function get_cookies_array() {
 
+
+
+                    function get_cookies_array() {
                       var cookies = { };
 
-                      // if (document.cookie && document.cookie != '') {
+                      if (document.cookie && document.cookie != '') {
                           var split = document.cookie.split(';');
                           for (var i = 0; i < split.length; i++) {
                               var name_value = split[i].split("=");
                               name_value[0] = name_value[0].replace(/^ /, '');
                               cookies[decodeURIComponent(name_value[0])] = decodeURIComponent(name_value[1]);
-                          }
-                      // }
+
+                               if (split.length <= 1) {
+                                cookieCount = 0;
+                              } else {
+                                cookieCount = split.length;
+                              } 
+
+                             
+                          
+                          }//END FOR
+                      }//END IF
 
                       return cookies;
                      
@@ -126,44 +140,51 @@ get_header(); ?>
 
 
                     var cookies = get_cookies_array();
-                      for(var name in cookies) {
 
-                        
-                     
+                    if (document.cookie && document.cookie != '') {
 
+
+                      //HEADING IF THERE ARE COOKIES
+                      document.write(   "<h3 style='margin-bottom:30px;'>My Saved Searches</h3>" );
+                      
+
+                      //IS COOKIE NAMES START WITH C-NAME ot C-URL, LOOP THROUGH THEM AND PRINT BUTTONS HERE
+                      for(var name in cookies) {            
                           var str = name;
                           var res = str.slice(0, 5);
+                        
+                          if (res == 'c_nam'  ) {
+                            tmpName = cookies[name];
+                          } 
+                          else if  (res == 'c_url' ) {
+                            document.write(   "<p><a href='redirect?" + cookies[name] + "' class='button round' style='width:50%;'>" + tmpName + "</a></p>" );
+                          }
+
+                      }//END FOR LOOP
 
 
-                        // //document.write( name + " : " + cookies[name] + "<br />" );
-                        if (res == 'c_nam'  ) {
-                          
-                          tmpName = cookies[name];
-                           
-                         } 
-                        else if  (res == 'c_url' ) {
+                    
+                        //CLEAR THE COOKIES IF THERE ARE ANY
+                        document.write(   "<hr><a onclick='clearCookies();'>Clear All Saved Searches</a>" + cookieCount);
 
-                          document.write(   "<p><a href='redirect?" + cookies[name] + "' class='button round' style='width:50%;'>" + tmpName + "</a></p>" );
+                    }//END IF
 
-                        }
-
-                         
-
-                      
-                       
-                       
-
-
-                    }
                   </script>
 
                 </div>
                 <div id="myDiv2"></div>
                 <div id="myDiv3"></div>
-                <div id="myDiv4"></div>
-                <div id="myDiv5">
 
-                  
+
+
+
+
+
+
+
+   
+                      
+
 
                 </div> 
 
@@ -179,58 +200,11 @@ get_header(); ?>
 
 
 function pgRefresh() {
-location.reload();
+  location.reload();
 }
-
-  
-
-function printCookies() { 
-
-    var deleteCookieButton = "<hr><a onclick='clearCookies();'>Clear All Saved Searches</a>";
-    var allCookies = document.cookie;
-
-
-    if (allCookies) {
-
-        cookies = document.cookie.split(";");
-        for (var i = 0; i < cookies.length; i++) {
-
-                if (cookies.length <= 1) {
-                  cookieCount = 0;
-                } else {
-                  cookieCount = cookies.length/2;
-                }
-
-            }
-
-
-    document.getElementById('myDiv0').innerHTML = '<h3 style="margin-bottom:30px;">My Saved Searches</h3>';
-    // document.getElementById('myDiv3').innerHTML = allCookies
-    document.getElementById('myDiv2').innerHTML = deleteCookieButton;
-
-
-    } else {
-
-    //alert('there is no cookie');
-
-    }
-
-
-
-}
-
-window.onload = printCookies;
-
-
-
-
-
-
-//document.cookie = "c_url=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
 
 // PUT PERMALINKS IN QUERY STRING FOR CHECKED BOXES
-
   var allVals = [];
    $('#color:checked').each(function() {
      allVals.push($(this).val());
@@ -250,9 +224,8 @@ window.onload = printCookies;
 
 
 
-
 //FUNCTION TO SAVE QUERY STRING
-function addCheckboxContent(form) {
+function setCookies(form) {
     var cbResults = '';
 
     for (var i = 0; i < form.elements.length; i++ ) {
@@ -275,7 +248,7 @@ function addCheckboxContent(form) {
      });
 
 
-      printCookies();
+      //pgRefresh();
 
         
     } else {
@@ -294,7 +267,21 @@ function clearCookies() {
     document.getElementById("myDiv1").innerHTML = "";
     document.getElementById("myDiv2").innerHTML = "";
     document.getElementById("myDiv3").innerHTML = "";
-    pgRefresh()
+
+       // This function will attempt to remove a cookie from all paths.
+      var pathBits = location.pathname.split('/');
+      var pathCurrent = ' path=';
+
+      // do a simple pathless delete first.
+      document.cookie = name + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT;';
+
+      for (var i = 0; i < pathBits.length; i++) {
+          pathCurrent += ((pathCurrent.substr(-1) != '/') ? '/' : '') + pathBits[i];
+          document.cookie = name + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT;' + pathCurrent + ';';
+      }
+
+  pgRefresh();
+
 
 }
 
