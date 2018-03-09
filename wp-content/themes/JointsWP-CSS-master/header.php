@@ -10,11 +10,10 @@
 
 <!doctype html>
 
+ <?php global $post; $category = get_the_category($post->ID);  ?>
 
-<?php foreach((get_the_category()) as $category)  {   ?>
-<html class="no-js <?php echo $category->slug . '-html';?>"  <?php language_attributes(); ?>>
+<html class="no-js <?php echo $category[0]->slug . '-html';?>"  <?php language_attributes(); ?>>
 
-<?php } ?>
 
 
 	<head>

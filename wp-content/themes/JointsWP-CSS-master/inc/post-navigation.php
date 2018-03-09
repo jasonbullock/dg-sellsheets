@@ -19,10 +19,14 @@ $queryString = $_SERVER['QUERY_STRING'];
 
 
 
+
+if ( $urlArray ) {
 ?>
-    <nav aria-label="Pagination">
-      <ul class="pagination text-right">
-      	<li class="pag-home-link"><a href="/"><<</a></li>
+<nav aria-label="Pagination">
+
+  <ul class="pagination text-right">
+
+    <li class="pag-home-link"><a href="/dg-sellsheets"><<</a></li>
 
     <?php
     $pageCounter = 1;
@@ -33,28 +37,19 @@ $queryString = $_SERVER['QUERY_STRING'];
       if ( $url == $stringUrl ) {
       echo '<li class="current">' . $pageCounter . '</li>';
       } else {
-
       echo '<li><a href="' . $stringUrl . '">' . $pageCounter . '</a></li>';
       }
 
     //echo $value;
-
-
-
-
     $pageCounter++;
-
-
     }
-
-
 
     ?>
       </ul>
     </nav>
+<?php
+}
+?>
 
 
 
-
- 		</div>
-	</div>	

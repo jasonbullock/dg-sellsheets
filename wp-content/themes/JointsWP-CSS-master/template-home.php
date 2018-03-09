@@ -81,8 +81,6 @@ get_header(); ?>
 
                     <hr>
 
-
-
                       <input type="button" style="width: 100%;" class="button" onclick="submitForm('redirect')" value="View Now" />
 
 
@@ -143,9 +141,8 @@ get_header(); ?>
 
                     if (document.cookie && document.cookie != '') {
 
-
-                      //HEADING IF THERE ARE COOKIES
-                      document.write(   "<h3 style='margin-bottom:30px;'>My Saved Searches</h3>" );
+                      var cookieExistsWithC_name = 0;
+                     
                       
 
                       //IS COOKIE NAMES START WITH C-NAME ot C-URL, LOOP THROUGH THEM AND PRINT BUTTONS HERE
@@ -154,18 +151,24 @@ get_header(); ?>
                           var res = str.slice(0, 5);
                         
                           if (res == 'c_nam'  ) {
+                            cookieExistsWithC_name = 1;
                             tmpName = cookies[name];
                           } 
                           else if  (res == 'c_url' ) {
-                            document.write(   "<p><a href='redirect?" + cookies[name] + "' class='button round' style='width:50%;'>" + tmpName + "</a></p>" );
+                            document.write( "<p><a href='redirect?" + cookies[name] + "' class='button round' style='width:50%;'>" + tmpName + "</a></p>" );
                           }
 
                       }//END FOR LOOP
 
 
-                    
-                        //CLEAR THE COOKIES IF THERE ARE ANY
-                        document.write(   "<hr><a onclick='clearCookies();'>Clear All Saved Searches</a>" + cookieCount);
+
+                     //HEADING IF THERE ARE COOKIES
+                      if (cookieExistsWithC_name == 1) {
+                       document.getElementById("myDiv0").innerHTML =  "<h3 style='margin-bottom:30px;'>My Saved Searches</h3>";
+
+                      document.write(  "<hr><a onclick='clearCookies();'>Clear All Saved Searches</a>");
+                      }
+
 
                     }//END IF
 

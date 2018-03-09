@@ -1,7 +1,6 @@
 <?php
 /*
-Template Name: Captain Morgan
-Template Post Type: sell_sheets, post, page, product
+
 */
 
 get_header(); ?>

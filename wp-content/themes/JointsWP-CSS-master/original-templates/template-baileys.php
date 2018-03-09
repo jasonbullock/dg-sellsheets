@@ -1,19 +1,53 @@
 <?php
 /*
-Template Post Type: sell_sheets, post, page, product
+
 */
 
 get_header(); ?>
-<div class="grid-container">
-	<div class="grid-x">
-		<div class="small-12 medium-9 large-9 cell">
-
-			<!--LOGO AND DATE GRID-->
-			<div class="grid-x">
 
 
+<?php
 
-					<button data-toggle="exampleModal8"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/baileys-logo.png" class="logo-top-baileys"/></button>
+$dateFrom = get_field( 'date_from' );
+$dateTo = get_field( 'date_to' );
+
+$spendDollars = get_field( 'spend' );
+$unitDollar = get_field( 'unit_dollar' );
+$spendIncrease = get_field( 'increase' );
+$unitDollarPercent = get_field( 'unit_dollar_percent' );
+$comparedTo = get_field( 'compared_to' );
+
+
+$natTvSpendDollars = get_field( 'national_tv_spend' );
+$unitDollar2 = get_field( 'unit_dollar2' );
+$natTvSpendIncrease = get_field( 'national_tv_increase' );
+$unitDollarPercent2 = get_field( 'unit_dollar_percent2' );
+$comparedTo2 = get_field( 'compared_to2' );
+
+
+$digitalSpendDollars = get_field( 'digital_spend' );
+$unitDollar3 = get_field( 'unit_dollar2' );
+$digitalSpendIncrease = get_field( 'digital_increase' );
+$unitDollarPercent3 = get_field( 'unit_dollar_percent2' );
+$comparedTo3 = get_field( 'compared_to2' );
+
+
+
+
+?>
+
+<div class="content">
+    <div class="grid-container">
+        <div class="inner-content grid-x grid-margin-x grid-padding-x">
+            <div class="small-12 medium-12 large-12 cell">
+<?php
+include 'inc/post-navigation.php';
+?>
+[evp_embed_video url="http://example.com/wp-content/uploads/videos/vid1.mp4"]
+[embeddoc url="http://jasonbullock.dev/dg-sellsheets/wp-content/uploads/2018/02/powerpoint.pptx" download="all" viewer="microsoft"]
+			<!--VIDEO MODAL-->
+
+				<button data-toggle="exampleModal8"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/baileys-logo.png" class="smlogo"/></button>
 
 				<div class="reveal" id="exampleModal8" data-reveal>
 
@@ -23,149 +57,179 @@ get_header(); ?>
 					X
 				  </button>
 				</div>
+			
 
+			<div class="pptcontainer">
+			 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+					
+					    			<?php the_content(); ?>
+					    	
+					    <?php endwhile; ?>
 
-
-					<p class="dates-baileys">
-					<?php the_field( 'date_from' ); ?> - 
-					<?php the_field( 'date_to' ); ?>
-					</p>
-
-
+			<?php endif; ?>
 			</div>
 
+			<!--DATES -->
+			<p><?php echo $dateFrom . ' - ' . $dateTo; ?></p>
 
-			<!--MEDIA SPEND GRID -->
-			<div class="grid-x media-spend">
-				<div class="small-12 medium-12 large-12 cell">
-
-					<h2 class="spend">
-						<?php the_field( 'spend_in_dollars' ); ?>
-						<?php the_field( 'spend_in_percentage' ); ?>
-					</h2>
-				</div>
-
-
-					<p class="right-border">
-					<span class="media">Media</span><br>
-					<span class="reaching"">Reaching</span>
-					</p>
-					<p>
-
-					<span class="stats">
-							<span class="bld">
-							<?php the_field( 'media_reaching_line_1_percentage' ); ?>
-							</span>
-						<?php the_field( 'media_reaching_line_1_people' ); ?> 
-						
-						<span class="bld">
-
-
-					<?php if ( get_field( 'media_reaching_line_1_age_from') ) { ?><?php the_field( 'media_reaching_line_1_age_from' ); ?><?php } ?><?php if ( get_field( 'media_reaching_line_1_age_to') ) { ?>-<?php the_field( 'media_reaching_line_1_age_to' ); ?>
-						<?php } ?>
-
-
-						</span>
-					</span><br>
-
-					<span class="stats"">
-						&<span class="bld">
-						<?php the_field( 'media_reaching_line_2_percentage' ); ?>
-						</span>
-						<?php the_field( 'media_reaching_line_2_people' ); ?>
-						<span class="bld">
-						<?php if ( get_field( 'media_reaching_line_2_age_from') ) { ?><?php the_field( 'media_reaching_line_2_age_from' ); ?><?php } ?><?php if ( get_field( 'media_reaching_line_2_age_to') ) { ?>-<?php the_field( 'media_reaching_line_2_age_to' ); ?>
-						<?php } ?>
-
-						</span></span>
-
-			</div>
+			<hr>
 
 
 
 
-			<p class="tv-social">
-			<span class="right-border">national tv</span>
-			<?php the_field( 'national_tv_spend_in_dollars' ); ?> 
-			<?php the_field( 'national_tv_spend_in_percentage' ); ?>
-			<p>
 
-			<div class="grid-x">
-				<div class="small-12 medium-5 large-6 cell">
+			<!--MAIN SPEND -->
 
-				<?php
+			<h1>
+				<?php echo '$' . $spendDollars . $unitDollar . ' +' . $spendIncrease . $unitDollarPercent . ' vs. ' . $comparedTo;?>
+			</h1>
 
-				if(get_field('national_tv_bullets')): ?>
 
-				<ul class="bailey-bullet">
+
+
+
+			<!--MEDIA REACH -->
+
+			<h2>Media Reaching </h2>
+				
+
+			<?php
+
+			if(get_field('media_reaching')): 
+
+			   
+			    $counter = 0;
+
+			    while(the_repeater_field('media_reaching')): 
+
+			    	$reachPercentage = get_sub_field('percentage');
+					$reachAudience = get_sub_field('audience');
+					$reachAges = get_sub_field('ages');
+
+					if($counter > 0) {
+						echo '& ';
+					}
+			        	echo '<strong>' . $reachPercentage . '%</strong> ' . $reachAudience . ' ' . '<strong>' . $reachAges . '</strong><br>'; 
+
+			        $counter++;
+			 
+			    endwhile;
+
+			 endif; 
+
+			 ?>
+
+			<hr>
+
+
+
+
+
+			<!-- NATIONAL TV -->
+
+			<h3>national tv | 
+			
+				<?php echo '$' . $natTvSpendDollars . $unitDollar2 . ' +' . $natTvSpendIncrease . $unitDollarPercent2 . ' vs. ' . $comparedTo2;?>
+			</h3>
+
+
+
+			<?php
+
+			if(get_field('national_tv_bullets')): ?>
+
+				<ul>
+
 				    <?php while(the_repeater_field('national_tv_bullets')): ?>
+
 				        <li><?php the_sub_field('ntv_bullets'); ?></li>
+
 				    <?php endwhile; ?>
+
 				</ul>
 
-				 <?php endif;
+			 <?php endif;
 
-				?>
-				</div>
-				<div class="small-12 medium-5 large-6 cell">
-
-					<img src="<?php echo get_template_directory_uri(); ?>/assets/images/tv-logos.png"/>	
-
-				</div>
-			</div>
-
-				
-
-
-
-
-			<p class="tv-social">
-			<span class="right-border">digital/social/search</span>
-				<?php the_field( 'digitalsocialsearch_spend_in_dollars' ); ?>
-				<?php the_field( 'digitalsocialsearch_spend_in_percentage' ); ?>
-			<p>		
-
-			<div class="grid-x">
-				<div class="small-12 medium-5 large-6 cell">
-				<?php
-
-				if(get_field('digitalsocialsearch_bullets')): ?>
-
-				<ul class="bailey-bullet">
-				    <?php while(the_repeater_field('digitalsocialsearch_bullets')): ?>
-				        <li><?php the_sub_field('dss_bullets'); ?></li>
-				    <?php endwhile; ?>
-				</ul>
-				
-				 <?php endif;
-
-				?>
-				</div>
-				<div class="small-12 medium-5 large-6 cell">
-
-					<img src="<?php echo get_template_directory_uri(); ?>/assets/images/social-img.png"/>	
-
-				</div>
-			</div>
-
-			<img src="<?php echo get_template_directory_uri(); ?>/assets/images/btm-logos.png"/>
+			?>
 
 			
 
-		</div>
+
+			<?php
+			if(get_field('nat_tv_channels')): ?>
 
 
-		<div class="small-12 medium-3 large-3 cell hide-for-small-only">
+
+				    <?php while(the_repeater_field('nat_tv_channels')): ?>
+
+				    	<img src="<?php echo the_sub_field('tv_channel_logos'); ?>"/>	
+				    	
 
 
-				<img class="bottle-art" src="<?php echo get_template_directory_uri(); ?>/assets/images/baileys-btl.gif"/>	
+				    <?php endwhile; ?>
+
+
+
+			 <?php endif; ?>
+
+
+
+
+			<hr>
+
+
+
 
 				
+
+			<!-- DIGITAL SOCIAL SEARCH -->
+
+			<h3>digital/social/search | 
+			
+				<?php echo '$' . $digitalSpendDollars . $unitDollar3 . ' +' . $digitalSpendIncrease . $unitDollarPercent3 . ' vs. ' . $comparedTo3;?>
+			</h3>
+
+
+			<?php
+
+			if(get_field('digitalsocialsearch_bullets')): ?>
+
+				<ul class="bailey-bullet">
+
+				    <?php while(the_repeater_field('digitalsocialsearch_bullets')): ?>
+
+				        <li><?php the_sub_field('dss_bullets'); ?></li>
+
+				    <?php endwhile; ?>
+
+				</ul>
+			
+			 <?php endif;
+
+			?>
+
+
+
+
+			<?php
+			if(get_field('digital_channels')): ?>
+
+
+
+				    <?php while(the_repeater_field('digital_channels')): ?>
+
+				    	<img src="<?php echo the_sub_field('digital_channel_logos'); ?>"/>	
+				    	
+
+				    <?php endwhile; ?>
+
+
+			 <?php endif; ?>
+
+
+
+			</div>
 		</div>
-
-
-
-
-	</div>	<!--END GRID-X-->
-</div>
+	</div>
+</div> <!-- END GRID CONTAINER -->
 <?php get_footer(); ?>

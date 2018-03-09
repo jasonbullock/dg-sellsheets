@@ -72,3 +72,16 @@ function new_dashboard_home($username, $user){
     }
 }
 add_action('wp_login', 'new_dashboard_home', 10, 2);
+
+
+
+
+
+
+
+
+
+
+
+
+
