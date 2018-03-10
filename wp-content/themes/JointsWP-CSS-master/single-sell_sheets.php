@@ -47,35 +47,49 @@ get_header();
 
 
 
-	<div class="grid-x grid-margin-x">
-		<div class="small-12 cell">
+
+		
 
 
 			<?php
 			// check if the repeater field has rows of data
 			if( have_rows('videos') ):
 
-				echo '<hr><h2>Videos</h2>';
+				echo '<div class="grid-x grid-margin-x">';
+				 	echo '<div class="large-12 cell">';
 
-			 	// loop through the rows of data
-			    while ( have_rows('videos') ) : the_row(); ?>
+					echo '<hr><h2>Videos</h2>';
 
-					<div class="embed-container">
-						<?php the_sub_field('video_url'); ?>
+					echo '</div>';
+
+				echo '</div>';
+
+				echo '<div class="grid-x grid-margin-x">';
+
+				 	// loop through the rows of data
+				    while ( have_rows('videos') ) : the_row(); ?>
+				    <div class="large-6 cell">
+
+						<div class="embed-container">
+							<?php the_sub_field('video_url'); ?>
+						</div>
+						<p>
+
 					</div>
-					<p>
-					<?php
 
-			    endwhile;
+					
 
-				else :
+			   <?php endwhile; ?>
 
-			endif;
-			?>
+			    </div>
+
+				
+
+			<?php endif; ?>
 
 			
-		</div>
-	</div>
+
+
 
 
 
